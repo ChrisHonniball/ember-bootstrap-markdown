@@ -1,5 +1,7 @@
 module.exports = {
   description: '',
+  
+  normalizeEntityName: function() {},
 
   // locals: function(options) {
   //   // Return custom template variables here.
@@ -8,11 +10,11 @@ module.exports = {
   //   };
   // }
 
-  afterInstall: function(options) {
+  afterInstall: function() {
     var that = this;
- 
-    return this.addBowerPackageToProject('markdown').then(function() {
-        return that.addBowerPackageToProject('to-markdown');
+    
+    return that.addBowerPackageToProject('markdown').then(function() {
+      return that.addBowerPackageToProject('to-markdown');
     });
   }
 };
