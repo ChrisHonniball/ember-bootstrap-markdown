@@ -1,6 +1,6 @@
 {
   "name": "ember-bootstrap-markdown",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Bootstrap styled Ember component for editing markdown content.",
   "directories": {
     "doc": "doc",
