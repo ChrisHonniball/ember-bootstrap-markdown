@@ -1,25 +1,36 @@
 # Ember-bootstrap-markdown
 
-This README outlines the details of collaborating on this Ember addon.
+A Bootstrap styled Ember component for editing markdown content.
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+```
+ember install:addon ember-bootstrap-markdown
+```
 
-## Running
+## Usage
 
-* `ember server`
-* Visit your app at http://localhost:4200.
+In your templates, render the component via `ember-bootstrap-markdown`:
 
-## Running Tests
+```handlebars
+{{ember-bootstrap-markdown
+  class='col-xs-6 col-xs-offset-3'
+  btns='heading,bold,italic,quote,link,image,list-ol,list-ul'
+  applyAction='save'
+  value=model.value
+}}
+```
 
-* `ember test`
-* `ember test --server`
+### Options
 
-## Building
+#### btns
 
-* `ember build`
+The desired formatting buttons for the editor.
 
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+#### applyAction
+
+The desired action that will be sent back to you application when the *Apply* button is clicked.
+
+#### value
+
+The linked value that holds the content.
