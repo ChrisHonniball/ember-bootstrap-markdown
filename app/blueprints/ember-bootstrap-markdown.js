@@ -1,0 +1,1 @@
+export { default } from 'ember-bootstrap-markdown/blueprints/ember-bootstrap-markdown';
