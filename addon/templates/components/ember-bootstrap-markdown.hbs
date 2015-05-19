@@ -1,0 +1,36 @@
+<div class="ember-bootstrap-markdown-toolbar">
+  {{#each toolbarBtns as |btnGroup|}}
+    <div class="btn-group">
+      {{#each btnGroup as |btn|}}
+        <button type="button" class="btn btn-default" {{action 'applyStyle' btn.regex btn.prompt}}><i {{bind-attr class=":fa btn.iconClass"}}></i></button>
+      {{/each}}
+    </div>
+  {{/each}}
+  
+  {{yield}}
+  
+  <div class="btn-group">
+    <button type="button" class="btn btn-default" {{action 'undo'}} {{bind-attr disabled="noUndo"}}><i class="fa fa-undo"></i></button>
+  </div>
+</div>
+
+<div class="ember-bootstrap-markdown-editor">
+  {{textarea
+    id=textareaId
+    class="ember-bootstrap-markdown-textarea form-control"
+    value=value
+  }}
+</div>
+
+  <div {{bind-attr class=":ember-bootstrap-markdown-preview previewHTML::placeholder"}} {{action 'edit'}}>
+    {{#if previewHTML}}
+      {{{previewHTML}}}
+    {{else}}
+      Click to edit content...
+    {{/if}}
+  </div>
+
+<div class="ember-bootstrap-markdown-footer">
+  <button class="btn btn-default" {{action 'discard'}}><i class="fa fa-remove"> Discard Changes</i></button>
+  <button class="btn btn-success" {{action 'apply'}}><i class="fa fa-save"> Apply</i></button>
+</div>

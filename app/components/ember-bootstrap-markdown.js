@@ -1,0 +1,1 @@
+export { default } from 'ember-bootstrap-markdown/components/ember-bootstrap-markdown';

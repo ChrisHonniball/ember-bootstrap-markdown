@@ -1,0 +1,28 @@
+.ember-bootstrap-markdown {
+
+}
+
+.ember-bootstrap-markdown > div {
+  margin-bottom: 5px;
+}
+
+.ember-bootstrap-markdown-toolbar {
+
+}
+
+.ember-bootstrap-markdown-editor {
+
+}
+
+.ember-bootstrap-markdown-preview {
+  cursor: pointer;
+}
+
+.ember-bootstrap-markdown-preview.placeholder {
+  color: #ddd;
+  font-style: italic;
+}
+
+.ember-bootstrap-markdown-footer {
+  text-align: right;
+}
