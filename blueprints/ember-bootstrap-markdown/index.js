@@ -13,8 +13,6 @@ module.exports = {
   afterInstall: function() {
     var that = this;
     
-    return that.addBowerPackageToProject('markdown').then(function() {
-      return that.addBowerPackageToProject('to-markdown');
-    });
+    return that.addBowerPackageToProject('marked');
   }
 };

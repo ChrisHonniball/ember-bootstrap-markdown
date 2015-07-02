@@ -135,7 +135,7 @@ export default Ember.Component.extend({
     var that = this,
       value = that.get('value');
     
-    return (value) ? markdown.toHTML(value) : "";
+    return (value) ? marked(value) : "";
   }),
   
   /*
@@ -159,6 +159,8 @@ export default Ember.Component.extend({
     that.$('.ember-bootstrap-markdown-textarea').on('blur', Ember.$.proxy(that.handleTextareaBlur, that));
     that.$('.ember-bootstrap-markdown-textarea').on('keyup input', Ember.$.proxy(that.handleTextareaSize, that));
     
+    that.$('.ember-bootstrap-markdown-preview a').on('click', Ember.$.proxy(that.handlePreviewLinkClick, that));
+    
     that.send('hideEditor');
     that.send('showPreview');
   },
@@ -171,6 +173,7 @@ export default Ember.Component.extend({
     
     that.$('.ember-bootstrap-markdown-textarea').off('blur');
     that.$('.ember-bootstrap-markdown-textarea').off('keyup input');
+    that.$('.ember-bootstrap-markdown-preview a').off('click');
   },
   
   ///////////////////////
@@ -204,6 +207,23 @@ export default Ember.Component.extend({
     var that = this,
       textarea = that.$('.ember-bootstrap-markdown-textarea');
     textarea.css('height', 'auto').css('height', document.getElementById(that.get('textareaId')).scrollHeight + 5);
+  },
+  
+  handlePreviewLinkClick: function(e) {
+    var that = this,
+      href = e.currentTarget.href;
+    
+    // Handle the link internally
+    e.preventDefault();
+    
+    var result = confirm("Open `" + href + "` in a new window?");
+    
+    // TODO handle with bootbox for nicer UI.
+    if(result) {
+      window.open(href, '_blank');
+      // Prevent the click from going further so that the section's `edit` doesn't get activated.
+      e.stopPropagation();
+    }
   },
   
   //////////////

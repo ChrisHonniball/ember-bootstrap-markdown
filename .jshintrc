@@ -3,7 +3,7 @@
     "document",
     "window",
     "-Promise",
-    "markdown"
+    "marked"
   ],
   "browser": true,
   "boss": true,
