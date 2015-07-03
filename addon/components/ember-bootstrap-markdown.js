@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   /*
    * An action that is taken when the 'apply' button is clicked.
    */
-  applyAction: "",
+  action: "",
   
   /*
    * The value
@@ -159,8 +159,6 @@ export default Ember.Component.extend({
     that.$('.ember-bootstrap-markdown-textarea').on('blur', Ember.$.proxy(that.handleTextareaBlur, that));
     that.$('.ember-bootstrap-markdown-textarea').on('keyup input', Ember.$.proxy(that.handleTextareaSize, that));
     
-    that.$('.ember-bootstrap-markdown-preview a').on('click', Ember.$.proxy(that.handlePreviewLinkClick, that));
-    
     that.send('hideEditor');
     that.send('showPreview');
   },
@@ -215,15 +213,36 @@ export default Ember.Component.extend({
     
     // Handle the link internally
     e.preventDefault();
+    e.stopPropagation();
     
-    var result = confirm("Open `" + href + "` in a new window?");
-    
-    // TODO handle with bootbox for nicer UI.
-    if(result) {
-      window.open(href, '_blank');
-      // Prevent the click from going further so that the section's `edit` doesn't get activated.
-      e.stopPropagation();
-    }
+    bootbox.dialog({
+      title: "You clicked a link",
+      message: '<p><strong>Link destination:</strong> ' + href + '</p><p>Please select what you would like to do...</p>',
+      closeButton: false,
+      buttons: {
+        no: {
+          label: "cancel",
+          className: "btn-default",
+          callback: function() {
+            e.stopPropagation();
+          }
+        },
+        edit: {
+          label: "Edit Section Content",
+          className: "btn-info",
+          callback: function() {
+            that.send('edit');
+          }
+        },
+        yes: {
+          label: "Visit Link in a New Window",
+          className: "btn-primary",
+          callback: function() {
+            window.open(href, '_blank');
+          }
+        }
+      }
+    });
   },
   
   //////////////
@@ -242,7 +261,20 @@ export default Ember.Component.extend({
         selection = that.get('selection');
       
       if(!selection){
-        alert('You must select text to apply a style!');
+        bootbox.dialog({
+          title: "Please make a text selection",
+          message: 'You must select text to apply a style.',
+          closeButton: false,
+          buttons: {
+            yes: {
+              label: "OK",
+              className: "btn-primary",
+              callback: function() {
+                
+              }
+            }
+          }
+        });
         return false;
       }
       
@@ -316,6 +348,7 @@ export default Ember.Component.extend({
       that.$('.ember-bootstrap-markdown-editor').show();
       that.$('.ember-bootstrap-markdown-toolbar').show();
       that.$('.ember-bootstrap-markdown-footer').show();
+      that.handleTextareaSize();
     },
     
     /*
@@ -324,6 +357,7 @@ export default Ember.Component.extend({
     hidePreview: function() {
       var that = this;
       
+      that.$('.ember-bootstrap-markdown-preview a').off('click');
       that.$('.ember-bootstrap-markdown-preview').hide();
     },
     
@@ -334,11 +368,12 @@ export default Ember.Component.extend({
       var that = this;
       
       that.$('.ember-bootstrap-markdown-preview').show();
+      that.$('.ember-bootstrap-markdown-preview a').on('click', Ember.$.proxy(that.handlePreviewLinkClick, that));
     },
     
     /*
      * Applies the changes, hides the editor, and shows the HTML preview.
-     * Also sends the `applyAction` if one is set.
+     * Also sends the `action` if one is set.
      */
     apply: function() {
       var that = this;
@@ -347,8 +382,8 @@ export default Ember.Component.extend({
       that.send('showPreview');
       that.send('clearUndo');
       
-      if(that.get('applyAction')) {
-        that.sendAction(that.get('applyAction'));
+      if(that.get('action')) {
+        that.sendAction();
       }
     },
     

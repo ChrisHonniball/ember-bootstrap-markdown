@@ -9,5 +9,6 @@ module.exports = {
     
     // Import the javascript.
     app.import(app.bowerDirectory + '/marked/marked.min.js');
+    app.import(app.bowerDirectory + '/bootbox/bootbox.js');
   }
 };

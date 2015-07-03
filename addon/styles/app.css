@@ -1,14 +1,3 @@
-/* Bootstrap default md */
-@media (min-width: 768px) {
-  .dl-horizontal dt {
-    width: 200px;
-  }
-  
-  .dl-horizontal dd {
-    margin-left: 220px;
-  }
-}
-
 .ember-bootstrap-markdown {
 
 }
@@ -36,4 +25,11 @@
 
 .ember-bootstrap-markdown-footer {
   text-align: right;
+}
+
+.ember-bootstrap-markdown-footer .tips {
+  float:left;
+  text-align: left;
+  color: #aaa;
+  font-size: 80%;
 }

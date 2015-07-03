@@ -30,7 +30,7 @@
 <div class="col-lg-10 col-lg-offset-1 col-md-12">
   <h2>Purpose</h2>
   <p class="lead">
-    <code>ember-bootstrap-markdown</code> description...
+    <code>ember-bootstrap-markdown</code> is a Bootstrap styled Ember component for editing markdown content.
   </p>
 
   <div id="installation" role="marker"></div>
@@ -70,12 +70,14 @@
 <div class="col-lg-10 col-lg-offset-1 col-md-12">
   <h2>Examples</h2>
 
-  {{ember-bootstrap-markdown
+  {{#ember-bootstrap-markdown
     btns='heading,bold,italic,quote,link,image,list-ol,list-ul'
-    applyAction='save'
+    action='save'
     value=test
+    as |component|
   }}
-
+  {{/ember-bootstrap-markdown}}
+  
   <div id="options" role="marker"></div>
 </div>
 
@@ -85,9 +87,7 @@
 <div class="col-lg-10 col-lg-offset-1 col-md-12">
   <h2>Options</h2>
 
-  <dl class="dl-horizontal">
-    addon-param
-  </dl>
+  <p>Options will be documented once the component is finalized</p>
 </div>
 
 <div class="clearfix"></div>

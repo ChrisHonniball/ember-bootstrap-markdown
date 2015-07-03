@@ -13,6 +13,9 @@ module.exports = {
   afterInstall: function() {
     var that = this;
     
-    return that.addBowerPackageToProject('marked');
+    return that.addBowerPackagesToProject([
+      { name: 'marked' },
+      { name: 'bootbox' }
+    ]);
   }
 };

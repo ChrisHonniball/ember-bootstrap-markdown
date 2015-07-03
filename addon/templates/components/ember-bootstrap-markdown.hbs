@@ -7,10 +7,14 @@
     </div>
   {{/each}}
   
-  {{yield}}
+  {{yield this}}
   
   <div class="btn-group">
     <button type="button" class="btn btn-default" {{action 'undo'}} {{bind-attr disabled="noUndo"}}><i class="fa fa-undo"></i></button>
+  </div>
+  
+  <div class="btn-group pull-right">
+    <a class="btn btn-link" title="What is Markdown?" href="https://guides.github.com/features/mastering-markdown/" target="_blank"><i class="fa fa-question-circle"></i></a>
   </div>
 </div>
 
@@ -22,15 +26,19 @@
   }}
 </div>
 
-  <div {{bind-attr class=":ember-bootstrap-markdown-preview previewHTML::placeholder"}} {{action 'edit'}}>
-    {{#if previewHTML}}
-      {{{previewHTML}}}
-    {{else}}
-      Click to edit content...
-    {{/if}}
-  </div>
+<div {{bind-attr class=":ember-bootstrap-markdown-preview previewHTML::placeholder"}} {{action 'edit'}}>
+  {{#if previewHTML}}
+    {{{previewHTML}}}
+  {{else}}
+    Click to edit content...
+  {{/if}}
+</div>
 
 <div class="ember-bootstrap-markdown-footer">
+  <div class="tips">
+    <em>* HTML is supported. <a title="What is Markdown?" href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> is preferred!</em>
+  </div>
+  
   <button class="btn btn-default" {{action 'discard'}}><i class="fa fa-remove"> Discard Changes</i></button>
   <button class="btn btn-success" {{action 'apply'}}><i class="fa fa-save"> Apply</i></button>
 </div>
