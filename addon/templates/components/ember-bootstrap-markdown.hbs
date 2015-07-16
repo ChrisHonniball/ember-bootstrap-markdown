@@ -2,7 +2,7 @@
   {{#each toolbarBtns as |btnGroup|}}
     <div class="btn-group">
       {{#each btnGroup as |btn|}}
-        <button type="button" class="btn btn-default" {{action 'applyStyle' btn.regex btn.prompt}}><i {{bind-attr class=":fa btn.iconClass"}}></i></button>
+        <button type="button" class="btn btn-default" {{action 'applyStyle' btn.regex btn.requireSelection btn.prompt}}><i class="fa {{btn.iconClass}}"></i></button>
       {{/each}}
     </div>
   {{/each}}
@@ -10,12 +10,10 @@
   {{yield this}}
   
   <div class="btn-group">
-    <button type="button" class="btn btn-default" {{action 'undo'}} {{bind-attr disabled="noUndo"}}><i class="fa fa-undo"></i></button>
+    <button type="button" class="btn btn-default" {{action 'undo'}} disabled="{{noUndo}}"><i class="fa fa-undo"></i></button>
   </div>
   
-  <div class="btn-group pull-right">
-    <a class="btn btn-link" title="What is Markdown?" href="https://guides.github.com/features/mastering-markdown/" target="_blank"><i class="fa fa-question-circle"></i></a>
-  </div>
+  <a class="btn btn-link" title="What is Markdown?" href="https://guides.github.com/features/mastering-markdown/" target="_blank"><i class="fa fa-question-circle"></i></a>
 </div>
 
 <div class="ember-bootstrap-markdown-editor">
@@ -26,7 +24,7 @@
   }}
 </div>
 
-<div {{bind-attr class=":ember-bootstrap-markdown-preview previewHTML::placeholder"}} {{action 'edit'}}>
+<div class="ember-bootstrap-markdown-preview {{if previewHTML '' 'placeholder'}}" {{action 'edit'}}>
   {{#if previewHTML}}
     {{{previewHTML}}}
   {{else}}
@@ -35,9 +33,7 @@
 </div>
 
 <div class="ember-bootstrap-markdown-footer">
-  <div class="tips">
-    <em>* HTML is supported. <a title="What is Markdown?" href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> is preferred!</em>
-  </div>
+  <div class="tips"><em>* HTML is supported. <a title="What is Markdown?" href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown</a> is preferred!</em></div>
   
   <button class="btn btn-default" {{action 'discard'}}><i class="fa fa-remove"> Discard Changes</i></button>
   <button class="btn btn-success" {{action 'apply'}}><i class="fa fa-save"> Apply</i></button>

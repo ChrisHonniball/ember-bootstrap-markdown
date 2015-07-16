@@ -10,6 +10,10 @@
 
 }
 
+.ember-bootstrap-markdown-toolbar .btn {
+  margin-bottom: 3px;
+}
+
 .ember-bootstrap-markdown-editor {
 
 }
@@ -24,12 +28,11 @@
 }
 
 .ember-bootstrap-markdown-footer {
-  text-align: right;
+
 }
 
 .ember-bootstrap-markdown-footer .tips {
-  float:left;
-  text-align: left;
+  margin-bottom: 5px;
   color: #aaa;
   font-size: 80%;
 }

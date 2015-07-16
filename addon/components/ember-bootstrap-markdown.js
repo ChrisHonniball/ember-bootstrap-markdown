@@ -5,6 +5,8 @@ export default Ember.Component.extend({
   layout: layout,
   
   classNames: ['ember-bootstrap-markdown'],
+
+  classNameBindings: ['highlight:bg-warning'],
   
   ////////////////
   //! Variables //
@@ -36,6 +38,8 @@ export default Ember.Component.extend({
   undoHistory: Ember.A(),
   
   btns: 'heading,bold,italic,quote,link,image,list-ol,list-ul',
+
+  highlight: false,
   
   /*
    * Builds toolbar out of the supplied string of buttons.
@@ -66,31 +70,36 @@ export default Ember.Component.extend({
    */
   _formattingOpts: {
     'heading': {
-      regex: '### $1',
+      regex: '## $1',
+      requireSelection: false,
       group: 1,
       style: 'heading',
       iconClass: 'fa-header'
     },
     'bold': {
       regex: '**$1**',
+      requireSelection: true,
       group: 2,
       style: 'bold',
       iconClass: 'fa-bold'
     },
     'italic': {
       regex: '*$1*',
+      requireSelection: true,
       group: 2,
       style: 'italic',
       iconClass: 'fa-italic'
     },
     'quote': {
       regex: '> $1',
+      requireSelection: false,
       group: 3,
       style: 'quote',
       iconClass: 'fa-quote-right'
     },
     'link': {
       regex: '[$1]({{result}})',
+      requireSelection: true,
       group: 4,
       style: 'link',
       iconClass: 'fa-link',
@@ -98,6 +107,7 @@ export default Ember.Component.extend({
     },
     'image': {
       regex: '![$1]({{result}})',
+      requireSelection: true,
       group: 4,
       style: 'image',
       iconClass: 'fa-image',
@@ -105,12 +115,14 @@ export default Ember.Component.extend({
     },
     'list-ol': {
       regex: '1. $1',
+      requireSelection: false,
       group: 5,
       style: 'list-ol',
       iconClass: 'fa-list-ol'
     },
     'list-ul': {
       regex: '* $1',
+      requireSelection: false,
       group: 5,
       style: 'list-ul',
       iconClass: 'fa-list-ul'
@@ -157,7 +169,8 @@ export default Ember.Component.extend({
     var that = this;
     
     that.$('.ember-bootstrap-markdown-textarea').on('blur', Ember.$.proxy(that.handleTextareaBlur, that));
-    that.$('.ember-bootstrap-markdown-textarea').on('keyup input', Ember.$.proxy(that.handleTextareaSize, that));
+    that.$('.ember-bootstrap-markdown-textarea').on('keyup input', Ember.$.proxy(that.handleTextareaSize, that)); 
+    that.$('.ember-bootstrap-markdown-preview').on('click', 'a', Ember.$.proxy(that.handlePreviewLinkClick, that));
     
     that.send('hideEditor');
     that.send('showPreview');
@@ -171,7 +184,7 @@ export default Ember.Component.extend({
     
     that.$('.ember-bootstrap-markdown-textarea').off('blur');
     that.$('.ember-bootstrap-markdown-textarea').off('keyup input');
-    that.$('.ember-bootstrap-markdown-preview a').off('click');
+    that.$('.ember-bootstrap-markdown-preview').off('click', 'a');
   },
   
   ///////////////////////
@@ -216,6 +229,7 @@ export default Ember.Component.extend({
     e.stopPropagation();
     
     bootbox.dialog({
+      backdrop: true,
       title: "You clicked a link",
       message: '<p><strong>Link destination:</strong> ' + href + '</p><p>Please select what you would like to do...</p>',
       closeButton: false,
@@ -255,15 +269,16 @@ export default Ember.Component.extend({
      * @param regex The supplied regular expression that handles the replacement.
      * @param promptText Supplied text for a standard prompt dialog.
      */
-    applyStyle: function(regex, promptText){
+    applyStyle: function(regex, requireSelection = false, promptText = null){
       var that = this, result,
         value = that.get('value'),
         selection = that.get('selection');
       
-      if(!selection){
+      if(!selection && requireSelection){
         bootbox.dialog({
+          backdrop: true,
           title: "Please make a text selection",
-          message: 'You must select text to apply a style.',
+          message: 'You must select text to apply this style.',
           closeButton: false,
           buttons: {
             yes: {
@@ -357,7 +372,6 @@ export default Ember.Component.extend({
     hidePreview: function() {
       var that = this;
       
-      that.$('.ember-bootstrap-markdown-preview a').off('click');
       that.$('.ember-bootstrap-markdown-preview').hide();
     },
     
@@ -368,7 +382,6 @@ export default Ember.Component.extend({
       var that = this;
       
       that.$('.ember-bootstrap-markdown-preview').show();
-      that.$('.ember-bootstrap-markdown-preview a').on('click', Ember.$.proxy(that.handlePreviewLinkClick, that));
     },
     
     /*
@@ -382,8 +395,8 @@ export default Ember.Component.extend({
       that.send('showPreview');
       that.send('clearUndo');
       
-      if(that.get('action')) {
-        that.sendAction();
+      if(that.attrs.apply) {
+        that.attrs.apply();
       }
     },
     
