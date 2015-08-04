@@ -2,7 +2,7 @@
   {{#each toolbarBtns as |btnGroup|}}
     <div class="btn-group">
       {{#each btnGroup as |btn|}}
-        <button type="button" class="btn btn-default" {{action 'applyStyle' btn.regex btn.requireSelection btn.prompt}}><i class="fa {{btn.iconClass}}"></i></button>
+        <button type="button" class="btn btn-default" {{action 'applyStyle' btn.regex btn.requireSelection btn.prompt}} title="{{btn.tooltip}}"><i class="fa {{btn.iconClass}}"></i></button>
       {{/each}}
     </div>
   {{/each}}
@@ -10,7 +10,7 @@
   {{yield this}}
   
   <div class="btn-group">
-    <button type="button" class="btn btn-default" {{action 'undo'}} disabled="{{noUndo}}"><i class="fa fa-undo"></i></button>
+    <button type="button" class="btn btn-default" {{action 'undo'}} disabled={{noUndo}}><i class="fa fa-undo"></i></button>
   </div>
   
   <a class="btn btn-link" title="What is Markdown?" href="https://guides.github.com/features/mastering-markdown/" target="_blank"><i class="fa fa-question-circle"></i></a>

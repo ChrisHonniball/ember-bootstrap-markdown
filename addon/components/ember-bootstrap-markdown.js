@@ -74,6 +74,7 @@ export default Ember.Component.extend({
       requireSelection: false,
       group: 1,
       style: 'heading',
+      tooltip: 'Add Heading',
       iconClass: 'fa-header'
     },
     'bold': {
@@ -81,6 +82,7 @@ export default Ember.Component.extend({
       requireSelection: true,
       group: 2,
       style: 'bold',
+      tooltip: 'Make Selection Bold',
       iconClass: 'fa-bold'
     },
     'italic': {
@@ -88,6 +90,7 @@ export default Ember.Component.extend({
       requireSelection: true,
       group: 2,
       style: 'italic',
+      tooltip: 'Make Selection Italic',
       iconClass: 'fa-italic'
     },
     'quote': {
@@ -95,6 +98,7 @@ export default Ember.Component.extend({
       requireSelection: false,
       group: 3,
       style: 'quote',
+      tooltip: 'Add Quoted Text',
       iconClass: 'fa-quote-right'
     },
     'link': {
@@ -102,14 +106,16 @@ export default Ember.Component.extend({
       requireSelection: true,
       group: 4,
       style: 'link',
+      tooltip: 'Make Selection a Link',
       iconClass: 'fa-link',
       prompt: 'Enter your link address. Include http://.'
     },
     'image': {
       regex: '![$1]({{result}})',
-      requireSelection: true,
+      requireSelection: false,
       group: 4,
       style: 'image',
+      tooltip: 'Add Embedded Image',
       iconClass: 'fa-image',
       prompt: 'Enter the image URL'
     },
@@ -118,6 +124,7 @@ export default Ember.Component.extend({
       requireSelection: false,
       group: 5,
       style: 'list-ol',
+      tooltip: 'Add Ordered List',
       iconClass: 'fa-list-ol'
     },
     'list-ul': {
@@ -125,6 +132,7 @@ export default Ember.Component.extend({
       requireSelection: false,
       group: 5,
       style: 'list-ul',
+      tooltip: 'Add Bulletted List',
       iconClass: 'fa-list-ul'
     }
   },
@@ -185,6 +193,8 @@ export default Ember.Component.extend({
     that.$('.ember-bootstrap-markdown-textarea').off('blur');
     that.$('.ember-bootstrap-markdown-textarea').off('keyup input');
     that.$('.ember-bootstrap-markdown-preview').off('click', 'a');
+    
+    that.$('.ember-bootstrap-markdown-toolbar .btn').tooltip('destroy');
   },
   
   ///////////////////////
@@ -274,6 +284,15 @@ export default Ember.Component.extend({
         value = that.get('value'),
         selection = that.get('selection');
       
+      /* */
+      console.log(
+        "%c%s#applyStyle args: %O",
+        "color: purple", // http://www.w3schools.com/html/html_colornames.asp
+        that.toString(),
+        arguments
+      );
+      //*/
+      
       if(!selection && requireSelection){
         bootbox.dialog({
           backdrop: true,
@@ -349,6 +368,7 @@ export default Ember.Component.extend({
     hideEditor: function() {
       var that = this;
       
+      that.$('.ember-bootstrap-markdown-toolbar .btn').tooltip('destroy');
       that.$('.ember-bootstrap-markdown-editor').hide();
       that.$('.ember-bootstrap-markdown-toolbar').hide();
       that.$('.ember-bootstrap-markdown-footer').hide();
@@ -363,6 +383,9 @@ export default Ember.Component.extend({
       that.$('.ember-bootstrap-markdown-editor').show();
       that.$('.ember-bootstrap-markdown-toolbar').show();
       that.$('.ember-bootstrap-markdown-footer').show();
+      that.$('.ember-bootstrap-markdown-toolbar .btn').tooltip({
+        container: 'body'
+      });
       that.handleTextareaSize();
     },
     
