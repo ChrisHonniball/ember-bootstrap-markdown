@@ -2,9 +2,7 @@
   "predef": [
     "document",
     "window",
-    "-Promise",
-    "marked",
-    "bootbox"
+    "-Promise"
   ],
   "browser": true,
   "boss": true,

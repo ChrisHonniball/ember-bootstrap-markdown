@@ -1,4 +1,4 @@
-/* global marked */
+/* global marked, bootbox */
 
 import Ember from 'ember';
 import layout from '../templates/components/ember-bootstrap-markdown';
