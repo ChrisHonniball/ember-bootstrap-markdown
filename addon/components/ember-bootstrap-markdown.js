@@ -1,3 +1,5 @@
+/* global marked */
+
 import Ember from 'ember';
 import layout from '../templates/components/ember-bootstrap-markdown';
 
@@ -280,7 +282,7 @@ export default Ember.Component.extend({
      * @param promptText Supplied text for a standard prompt dialog.
      */
     applyStyle: function(regex, requireSelection = false, promptText = null){
-      var that = this, result,
+      let that = this, promise,
         value = that.get('value'),
         selection = that.get('selection');
       
@@ -312,30 +314,42 @@ export default Ember.Component.extend({
         return false;
       }
       
-      if(promptText) {
-        result = prompt(promptText);
-        
-        if(!result) {
-          return false;
+      promise = new Ember.RSVP.Promise(function(resolve, reject) {
+        if(promptText) {
+          
+          bootbox.prompt({
+            backdrop: true,
+            title: promptText,
+            callback(result) {
+              if(!result) {
+                reject();
+              }
+              
+              regex = regex.replace('{{result}}', result);
+              resolve(regex);
+            }
+          });
+        } else {
+          resolve(regex);
         }
+      }).then(function(regex) {
+        that.send('addUndoStep', value);
         
-        regex = regex.replace('{{result}}', result);
-      }
-      
-      that.send('addUndoStep', value);
-      
-      var newStr = selection.replace(/^(.*)$/gm, regex),
-        newValue = value.substr(0, that.get('startPos')) + newStr + value.substr(that.get('endPos'), value.length),
-        newCursorPos = that.get('startPos') + newStr.length,
-        strOffset = newStr.length - that.get('selection').length;
-      
-      that.setProperties({
-        selection: '',
-        value: newValue,
-        newCursorPos: newCursorPos
+        var newStr = selection.replace(/^(.*)$/gm, regex),
+          newValue = value.substr(0, that.get('startPos')) + newStr + value.substr(that.get('endPos'), value.length),
+          newCursorPos = that.get('startPos') + newStr.length,
+          strOffset = newStr.length - that.get('selection').length;
+        
+        that.setProperties({
+          selection: '',
+          value: newValue,
+          newCursorPos: newCursorPos
+        });
+        
+        that.send('setCursor', that.get('endPos') + strOffset);
+      }, function() {
+        // Do nothing...
       });
-      
-      that.send('setCursor', that.get('endPos') + strOffset);
     },
     
     /*
